@@ -1,7 +1,7 @@
-import React from 'react'
+import React from 'react';
 
-const HelloWorld = () => (
-    <div>Hello World</div>
-)
+const HelloWorld: React.FC = () => (
+  <div>Hello World</div>
+);
 
-export default HelloWorld
+export default HelloWorld;
