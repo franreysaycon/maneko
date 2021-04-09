@@ -15,7 +15,7 @@ const AuthPage: React.FC<AuthPageProps> = ({ children }) => {
   return (
     <Page>
       <Header onSidebarOpen={() => setSidebarOpen(true)} />
-      <Box w="100%" p="3" overflowY="scroll">
+      <Box w="100%" p="3" overflowY="scroll" overflowX="hidden">
         { children }
       </Box>
       <AnimatePresence>
