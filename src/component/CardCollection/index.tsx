@@ -1,7 +1,9 @@
-import { Box } from '@chakra-ui/react'
+import { Box, Text, useDisclosure } from '@chakra-ui/react'
 import { motion, useAnimation } from 'framer-motion'
 import React, { useState } from 'react'
+import { PlusCircle } from 'react-feather'
 import Card from './Card'
+import CardForm from './CardForm'
 import { CardT } from './types'
 
 interface CardCollectionProps {
@@ -17,6 +19,7 @@ const swipePower = (offset: number, absDistance: number): number => {
 const CardCollection: React.FC<CardCollectionProps> = ({ cards }) => {
   const controls = useAnimation();
   const [curIndex, setCurIndex] = useState<number>(0)
+  const cardForm = useDisclosure() 
 
   const handleDragEnd = async (_, { offset }) => {
     const power = swipePower(offset.x, 300);
@@ -34,7 +37,11 @@ const CardCollection: React.FC<CardCollectionProps> = ({ cards }) => {
   };
 
   return (
-    <Box d="flex">
+    <Box d="flex" flexDir="column">
+      <Box d="flex" justifyContent="space-between" alignItems="center" mb="2">
+        <Text textTransform="uppercase" fontSize="sm" color="white">Your Accounts</Text>
+        <PlusCircle color="white" size={20} onClick={cardForm.onOpen} />
+      </Box>
       <Box
         w="330px"
         h="170px"
@@ -67,6 +74,7 @@ const CardCollection: React.FC<CardCollectionProps> = ({ cards }) => {
             { cards.map( card => <Card key={card.id} {...card} /> )}
         </MotionBox>
       </Box>
+      <CardForm isOpen={cardForm.isOpen} onClose={cardForm.onClose} />
     </Box>
   )
 }

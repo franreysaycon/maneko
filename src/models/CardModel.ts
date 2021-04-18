@@ -1,17 +1,11 @@
-import { getModelForClass, prop } from "@typegoose/typegoose";
-import { ObjectID, Timestamp } from "bson";
+import { getModelForClass, pre, prop } from "@typegoose/typegoose";
 
-export enum TransactionType {
-    WITHDRAWAL = "withdrawal",
-    DEPOSIT = "deposit",
-    PAYMENT = "payment",
-    COST = "cost"
-}
-
+@pre<TransactionC>('save', function () {
+    if(!this.createdAt){
+        this.createdAt = new Date()
+    }
+})
 class TransactionC {
-    @prop()
-    public id: ObjectID;
-
     @prop()
     public name: string;
 
@@ -19,35 +13,44 @@ class TransactionC {
     public value: number;
 
     @prop()
-    public type: TransactionType;
+    public type: string;
 
     @prop()
-    public createdAt: Timestamp;
+    public createdAt: Date;
 }
 
-class CardC {
+@pre<CardC>('save', function () {
+    if(!this.createdAt){
+        this.createdAt = new Date()
+    }
+    this.updatedAt = new Date()
+})
+export class CardC {
     @prop()
-    public name: string;
+    public name: string; 
 
     @prop()
-    public userId: ObjectID;
+    public type: string;
 
     @prop()
-    public email: string;
+    public balance: number;
 
     @prop()
-    public image: string;
+    public issuer: string;
 
     @prop()
-    public createdAt: Timestamp;
+    public userId: string;
 
     @prop()
-    public updatedAt: Timestamp;
+    public createdAt: Date;
+
+    @prop()
+    public updatedAt: Date;
 
     @prop()
     public budget: number;
 
-    @prop({ type: () => TransactionC })
+    @prop({ type: () => TransactionC, default: [] })
     public transactions: TransactionC[]
 }
 
