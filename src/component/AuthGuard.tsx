@@ -8,7 +8,7 @@ interface AuthGuardProps {
 const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
   const [session] = useSession()
 
-  if(!session){
+  if (!session) {
     return <></>
   }
 

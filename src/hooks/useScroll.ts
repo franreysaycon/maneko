@@ -1,18 +1,18 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react'
 
 const useScroll = (): [boolean, (data: boolean) => void] => {
-  const [startedScroll, setStartedScroll] = useState<boolean>(false);
+  const [startedScroll, setStartedScroll] = useState<boolean>(false)
 
   useEffect(() => {
     if (startedScroll) {
-      const timer = setTimeout(() => setStartedScroll(false), 600);
+      const timer = setTimeout(() => setStartedScroll(false), 600)
       return () => {
-        clearTimeout(timer);
-      };
+        clearTimeout(timer)
+      }
     }
-  }, [startedScroll]);
+  }, [startedScroll])
 
-  return [startedScroll, setStartedScroll];
-};
+  return [startedScroll, setStartedScroll]
+}
 
-export default useScroll;
+export default useScroll

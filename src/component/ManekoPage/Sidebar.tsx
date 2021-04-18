@@ -1,21 +1,21 @@
-import React, { useRef } from 'react';
-import { Box } from '@chakra-ui/react';
-import { motion } from 'framer-motion';
-import useClickOutside from '../../hooks/useClickOutside';
-import { useRouter } from 'next/router';
+import React, { useRef } from 'react'
+import { Box } from '@chakra-ui/react'
+import { motion } from 'framer-motion'
+import useClickOutside from '../../hooks/useClickOutside'
+import { useRouter } from 'next/router'
 import Link from 'next/link'
 
-const Container = motion(Box);
-const SidebarContainer = motion(Box);
+const Container = motion(Box)
+const SidebarContainer = motion(Box)
 
 interface SidebarProps {
   onClose: () => void;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
-  const sidebarRef = useRef();
-  const router = useRouter();
-  useClickOutside(sidebarRef, onClose);
+  const sidebarRef = useRef()
+  const router = useRouter()
+  useClickOutside(sidebarRef, onClose)
 
   return (
     <Container
@@ -39,7 +39,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
         exit={{ x: '-50%' }}
         transition={{
           ease: 'easeIn',
-          duration: 0.3,
+          duration: 0.3
         }}
         ref={sidebarRef}
         zIndex="docked"
@@ -59,7 +59,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
         </Link>
       </SidebarContainer>
     </Container>
-  );
-};
+  )
+}
 
-export default Sidebar;
+export default Sidebar

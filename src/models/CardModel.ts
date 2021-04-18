@@ -1,9 +1,9 @@
-import { getModelForClass, pre, prop } from "@typegoose/typegoose";
+import { getModelForClass, pre, prop } from '@typegoose/typegoose'
 
 @pre<TransactionC>('save', function () {
-    if(!this.createdAt){
-        this.createdAt = new Date()
-    }
+  if (!this.createdAt) {
+    this.createdAt = new Date()
+  }
 })
 export class TransactionC {
     @prop()
@@ -20,14 +20,14 @@ export class TransactionC {
 }
 
 @pre<CardC>('save', function () {
-    if(!this.createdAt){
-        this.createdAt = new Date()
-    }
-    this.updatedAt = new Date()
+  if (!this.createdAt) {
+    this.createdAt = new Date()
+  }
+  this.updatedAt = new Date()
 })
 export class CardC {
     @prop()
-    public name: string; 
+    public name: string;
 
     @prop()
     public type: string;

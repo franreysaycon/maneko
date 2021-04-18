@@ -14,10 +14,10 @@ interface TransactionListProps {
 }
 
 const TransactionList: React.FC<TransactionListProps> = ({ transactions, cardType, cardId }) => {
-    const transForm = useDisclosure()
-    const [scrolling, setScrolling] = useScroll();
-    
-    return (
+  const transForm = useDisclosure()
+  const [scrolling, setScrolling] = useScroll()
+
+  return (
         <Box d="flex" flexDir="column" h="100%" minH="md">
             <Box d="flex" justifyContent="space-between" alignItems="center" mb="2">
             <Text textTransform="uppercase" fontSize="sm" color="white">Card Transactions</Text>
@@ -29,22 +29,22 @@ const TransactionList: React.FC<TransactionListProps> = ({ transactions, cardTyp
                 overflowY="scroll"
                 flexDir="column"
                 css={{
-                '> div': { marginBottom: '10px' },
-                '> div:last-child': { marginBottom: '0px' },
+                  '> div': { marginBottom: '10px' },
+                  '> div:last-child': { marginBottom: '0px' }
                 }}
                 onScroll={() => setScrolling(true)}
             >
                 {
-                    transactions.map(trans => <Transaction key={trans._id} {...trans} cardType={cardType} scrolling={scrolling} /> )
+                    transactions.map(trans => <Transaction key={trans._id} {...trans} cardType={cardType} scrolling={scrolling} />)
                 }
             </Box>
             <TransactionCreateForm cardId={cardId} type={cardType} isOpen={transForm.isOpen} onClose={transForm.onClose} />
         </Box>
-    )
+  )
 }
 
 TransactionList.defaultProps = {
-    transactions: []
+  transactions: []
 }
 
 export default TransactionList

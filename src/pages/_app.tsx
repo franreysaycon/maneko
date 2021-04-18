@@ -5,7 +5,6 @@ import theme from '../theme'
 import 'typeface-poppins'
 import { QueryClient, QueryClientProvider } from 'react-query'
 
-
 const queryClient = new QueryClient()
 
 const App: React.FC<AppProps> = ({ Component, pageProps }) => (

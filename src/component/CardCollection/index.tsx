@@ -14,28 +14,28 @@ interface CardCollectionProps {
 const MotionBox = motion(Box)
 
 const swipePower = (offset: number, absDistance: number): number => {
-  return (offset / absDistance) * 100;
+  return (offset / absDistance) * 100
 }
 
 const CardCollection: React.FC<CardCollectionProps> = ({ cards }) => {
-  const controls = useAnimation();
+  const controls = useAnimation()
   const [curIndex, setCurIndex] = useState<number>(0)
-  const cardForm = useDisclosure() 
+  const cardForm = useDisclosure()
 
   const handleDragEnd = async (_, { offset }) => {
-    const power = swipePower(offset.x, 300);
-    if (power > 60 && curIndex -1 !== -1) {
+    const power = swipePower(offset.x, 300)
+    if (power > 60 && curIndex - 1 !== -1) {
       await controls.start({
-        x: -270*(curIndex-1) - (25*(curIndex-2)) - (curIndex === 1 ? 25 : 0),
+        x: -270 * (curIndex - 1) - (25 * (curIndex - 2)) - (curIndex === 1 ? 25 : 0)
       })
       setCurIndex(s => s - 1)
     } else if (power < -60 && curIndex + 1 < cards.length) {
       await controls.start({
-        x: -270*(curIndex+1) - (25*curIndex) + (curIndex === cards.length - 2 ? 25 : 0),
+        x: -270 * (curIndex + 1) - (25 * curIndex) + (curIndex === cards.length - 2 ? 25 : 0)
       })
       setCurIndex(s => s + 1)
     }
-  };
+  }
 
   return (
     <Box d="flex" flexDir="column">
@@ -60,20 +60,20 @@ const CardCollection: React.FC<CardCollectionProps> = ({ cards }) => {
           dragMomentum={false}
           animate={controls}
           transition={{
-            x: { type: "spring", stiffness: 600, damping: 100},
+            x: { type: 'spring', stiffness: 600, damping: 100 }
           }}
           onDragEnd={handleDragEnd}
           layout
           css={{
-            ">div": {
+            '>div': {
               marginRight: '15px'
             },
-            ">div:last-child": {
+            '>div:last-child': {
               marginRight: '0px'
             }
           }}
         >
-          { cards.map( card => <Card key={card._id} {...card} /> )}
+          { cards.map(card => <Card key={card._id} {...card} />)}
         </MotionBox>
       </Box>
       <TransactionList transactions={cards[curIndex].transactions} cardId={cards[curIndex]._id} cardType={cards[curIndex].type} />

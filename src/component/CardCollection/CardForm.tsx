@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from 'react'
 import {
   Modal,
   ModalOverlay,
@@ -13,11 +13,11 @@ import {
   Button,
   FormHelperText,
   Input,
-  UseDisclosureProps,
-} from '@chakra-ui/react';
-import { useForm } from 'react-hook-form';
-import { useMutation, useQueryClient } from 'react-query';
-import axios from 'axios';
+  UseDisclosureProps
+} from '@chakra-ui/react'
+import { useForm } from 'react-hook-form'
+import { useMutation, useQueryClient } from 'react-query'
+import axios from 'axios'
 
 interface CreateCardRequestBody {
     type: string;
@@ -31,28 +31,28 @@ interface CreateCardResponse extends CreateCardRequestBody {
 }
 
 const postCard = async (data: CreateCardRequestBody): Promise<CreateCardResponse> => {
-    return await axios.post<CreateCardRequestBody, CreateCardResponse>("/api/cards", data)
+  return await axios.post<CreateCardRequestBody, CreateCardResponse>('/api/cards', data)
 }
 
 const CardForm: React.FC<UseDisclosureProps> = ({
-  isOpen, onClose,
+  isOpen, onClose
 }) => {
   const {
     register, handleSubmit, formState: { errors }, watch
-  } = useForm<CreateCardRequestBody>();
+  } = useForm<CreateCardRequestBody>()
   const queryClient = useQueryClient()
   const cardMutation = useMutation(postCard, {
     onSuccess: () => {
-        queryClient.invalidateQueries('cards')
+      queryClient.invalidateQueries('cards')
     }
   })
 
   useEffect(() => {
-    if(cardMutation.isSuccess){
-        onClose()
+    if (cardMutation.isSuccess) {
+      onClose()
     }
   }, [cardMutation.isSuccess])
-  
+
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
@@ -73,7 +73,7 @@ const CardForm: React.FC<UseDisclosureProps> = ({
             {errors.name && <FormHelperText color="red.300">{ errors.name }</FormHelperText> }
           </FormControl>
           <FormControl mb="3">
-            <FormLabel textTransform="uppercase">{watch('type') === 'credit card' ? 'Outstanding Balance': 'Current Balance'}</FormLabel>
+            <FormLabel textTransform="uppercase">{watch('type') === 'credit card' ? 'Outstanding Balance' : 'Current Balance'}</FormLabel>
             <Input type="number" {...register('balance', { required: true })} />
             {errors.name && <FormHelperText color="red.300">{ errors.name }</FormHelperText> }
           </FormControl>
@@ -94,7 +94,7 @@ const CardForm: React.FC<UseDisclosureProps> = ({
         </ModalFooter>
       </ModalContent>
     </Modal>
-  );
-};
+  )
+}
 
-export default CardForm;
+export default CardForm

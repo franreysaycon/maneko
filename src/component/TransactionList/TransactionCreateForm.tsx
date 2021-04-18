@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from 'react'
 import {
   Modal,
   ModalOverlay,
@@ -13,11 +13,11 @@ import {
   Input,
   Button,
   FormHelperText,
-  UseDisclosureProps,
-} from '@chakra-ui/react';
-import { useForm } from 'react-hook-form';
-import axios from 'axios';
-import { useMutation, useQueryClient } from 'react-query';
+  UseDisclosureProps
+} from '@chakra-ui/react'
+import { useForm } from 'react-hook-form'
+import axios from 'axios'
+import { useMutation, useQueryClient } from 'react-query'
 
 interface CreateTransactionRequestBody {
     name: string;
@@ -40,18 +40,18 @@ interface CreateTransactionData {
 }
 
 const createTransaction = async ({ cardId, data }: CreateTransactionData) : Promise<CreateTransactionResponse> => {
-    const response = await axios.post<CreateTransactionResponse>(`/api/cards/${cardId}/transactions`, data)
-    return response.data
+  const response = await axios.post<CreateTransactionResponse>(`/api/cards/${cardId}/transactions`, data)
+  return response.data
 }
 
 const TransactionCreateForm: React.FC<UseDisclosureProps & TransactionCreateFormProps> = ({ isOpen, onClose, type, cardId }) => {
   const {
     register, handleSubmit, formState: { errors }, reset
-  } = useForm<CreateTransactionRequestBody>();
+  } = useForm<CreateTransactionRequestBody>()
   const queryClient = useQueryClient()
   const transMutation = useMutation(createTransaction, {
     onSuccess: () => {
-        queryClient.invalidateQueries('cards')
+      queryClient.invalidateQueries('cards')
     }
   })
 
@@ -61,7 +61,7 @@ const TransactionCreateForm: React.FC<UseDisclosureProps & TransactionCreateForm
   }
 
   useEffect(() => {
-    if(transMutation.isSuccess){
+    if (transMutation.isSuccess) {
       handleClose()
     }
   }, [transMutation.isSuccess])
@@ -102,7 +102,7 @@ const TransactionCreateForm: React.FC<UseDisclosureProps & TransactionCreateForm
         </ModalFooter>
       </ModalContent>
     </Modal>
-  );
-};
+  )
+}
 
-export default TransactionCreateForm;
+export default TransactionCreateForm

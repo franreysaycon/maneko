@@ -1,5 +1,5 @@
-import { getModelForClass, prop } from "@typegoose/typegoose";
-import { Timestamp } from "bson";
+import { getModelForClass, prop } from '@typegoose/typegoose'
+import { Timestamp } from 'bson'
 
 class UserC {
     @prop()

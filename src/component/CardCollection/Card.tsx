@@ -3,10 +3,10 @@ import React from 'react'
 import { CardT } from './types'
 
 const ISSUER_COLORS = {
-  'bpi_atm': '#B20001',
-  'bpi_cc': '#2B4162',
-  'bdo_atm': '#003375',
-  'ing_atm': '#ff6201',
+  bpi_atm: '#B20001',
+  bpi_cc: '#2B4162',
+  bdo_atm: '#003375',
+  ing_atm: '#ff6201'
 }
 
 const Card: React.FC<CardT> = ({ type, balance, name, issuer }) => (
