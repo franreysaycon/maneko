@@ -1,6 +1,9 @@
-import React, { useEffect } from 'react'
+import React, { useEffect } from "react"
 
-type useClickOutsideFn<T> = (ref: React.RefObject<T>, onClick: () => void) => void
+type useClickOutsideFn<T> = (
+  ref: React.RefObject<T>,
+  onClick: () => void
+) => void
 
 const useClickOutside: useClickOutsideFn<HTMLElement> = (ref, onClick) => {
   const handleClickOutside = (e) => {
@@ -10,9 +13,9 @@ const useClickOutside: useClickOutsideFn<HTMLElement> = (ref, onClick) => {
   }
 
   useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside)
+    document.addEventListener("mousedown", handleClickOutside)
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
+      document.removeEventListener("mousedown", handleClickOutside)
     }
   })
 }

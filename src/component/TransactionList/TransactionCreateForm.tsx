@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect } from "react"
 import {
   Modal,
   ModalOverlay,
@@ -13,46 +13,57 @@ import {
   Input,
   Button,
   FormHelperText,
-  UseDisclosureProps
-} from '@chakra-ui/react'
-import { useForm } from 'react-hook-form'
-import axios from 'axios'
-import { useMutation, useQueryClient } from 'react-query'
+  UseDisclosureProps,
+} from "@chakra-ui/react"
+import { useForm } from "react-hook-form"
+import axios from "axios"
+import { useMutation, useQueryClient } from "react-query"
 
 interface CreateTransactionRequestBody {
-    name: string;
-    value: number;
-    type: string;
+  name: string
+  value: number
+  type: string
 }
 
 interface TransactionCreateFormProps {
-    type: string;
-    cardId: string;
+  type: string
+  cardId: string
 }
 
 interface CreateTransactionResponse {
-    success: boolean;
+  success: boolean
 }
 
 interface CreateTransactionData {
-    cardId: string;
-    data: CreateTransactionRequestBody;
+  cardId: string
+  data: CreateTransactionRequestBody
 }
 
-const createTransaction = async ({ cardId, data }: CreateTransactionData) : Promise<CreateTransactionResponse> => {
-  const response = await axios.post<CreateTransactionResponse>(`/api/cards/${cardId}/transactions`, data)
+const createTransaction = async ({
+  cardId,
+  data,
+}: CreateTransactionData): Promise<CreateTransactionResponse> => {
+  const response = await axios.post<CreateTransactionResponse>(
+    `/api/cards/${cardId}/transactions`,
+    data
+  )
   return response.data
 }
 
-const TransactionCreateForm: React.FC<UseDisclosureProps & TransactionCreateFormProps> = ({ isOpen, onClose, type, cardId }) => {
+const TransactionCreateForm: React.FC<
+  UseDisclosureProps & TransactionCreateFormProps
+> = ({ isOpen, onClose, type, cardId }) => {
   const {
-    register, handleSubmit, formState: { errors }, reset
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
   } = useForm<CreateTransactionRequestBody>()
   const queryClient = useQueryClient()
   const transMutation = useMutation(createTransaction, {
     onSuccess: () => {
-      queryClient.invalidateQueries('cards')
-    }
+      queryClient.invalidateQueries("cards")
+    },
   })
 
   const handleClose = () => {
@@ -75,19 +86,27 @@ const TransactionCreateForm: React.FC<UseDisclosureProps & TransactionCreateForm
         <ModalBody>
           <FormControl mb="15px">
             <FormLabel textTransform="uppercase">Name</FormLabel>
-            <Input {...register('name', { required: true, maxLength: 100 })} />
-            {errors.name && <FormHelperText color="red.300">{ errors.name }</FormHelperText> }
+            <Input {...register("name", { required: true, maxLength: 100 })} />
+            {errors.name && (
+              <FormHelperText color="red.300">{errors.name}</FormHelperText>
+            )}
           </FormControl>
           <FormControl mb="15px">
             <FormLabel textTransform="uppercase">Value</FormLabel>
-            <Input {...register('value', { required: true, min: 1 })} />
-            {errors.value && <FormHelperText color="red.300">{ errors.value }</FormHelperText> }
+            <Input {...register("value", { required: true, min: 1 })} />
+            {errors.value && (
+              <FormHelperText color="red.300">{errors.value}</FormHelperText>
+            )}
           </FormControl>
           <FormControl id="schedule" mb="15px">
             <FormLabel textTransform="uppercase">What kind?</FormLabel>
-            <Select {...register('type')}>
-              <option value="neg">{ type === 'atm' ? 'WITHDRAWAL' : 'COST' }</option>
-              <option value="pos">{ type === 'atm' ? 'DEPOSIT' : 'PAYMENT' }</option>
+            <Select {...register("type")}>
+              <option value="neg">
+                {type === "atm" ? "WITHDRAWAL" : "COST"}
+              </option>
+              <option value="pos">
+                {type === "atm" ? "DEPOSIT" : "PAYMENT"}
+              </option>
             </Select>
           </FormControl>
         </ModalBody>
@@ -96,9 +115,13 @@ const TransactionCreateForm: React.FC<UseDisclosureProps & TransactionCreateForm
             isLoading={transMutation.isLoading}
             bgColor="red.500"
             mr={3}
-            onClick={handleSubmit(async data => await transMutation.mutate({ cardId, data }))}
+            onClick={handleSubmit(
+              async (data) => await transMutation.mutate({ cardId, data })
+            )}
             color="white"
-          >Create</Button>
+          >
+            Create
+          </Button>
         </ModalFooter>
       </ModalContent>
     </Modal>

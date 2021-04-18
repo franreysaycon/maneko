@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from "react"
 
 const useScroll = (): [boolean, (data: boolean) => void] => {
   const [startedScroll, setStartedScroll] = useState<boolean>(false)

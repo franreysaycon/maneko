@@ -1,7 +1,10 @@
-import mongoose from 'mongoose'
-import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next'
+import mongoose from "mongoose"
+import { NextApiHandler, NextApiRequest, NextApiResponse } from "next"
 
-const mongooseConnect = (handler: NextApiHandler): NextApiHandler => async (req: NextApiRequest, res: NextApiResponse) => {
+const mongooseConnect = (handler: NextApiHandler): NextApiHandler => async (
+  req: NextApiRequest,
+  res: NextApiResponse
+) => {
   if (mongoose.connections[0].readyState) {
     return handler(req, res)
   }
@@ -9,7 +12,7 @@ const mongooseConnect = (handler: NextApiHandler): NextApiHandler => async (req:
     useUnifiedTopology: true,
     useFindAndModify: false,
     useCreateIndex: true,
-    useNewUrlParser: true
+    useNewUrlParser: true,
   })
   return handler(req, res)
 }

@@ -1,5 +1,5 @@
-import React from 'react'
-import { useSession } from 'next-auth/client'
+import React from "react"
+import { useSession } from "next-auth/client"
 
 interface AuthGuardProps {
   children: React.ReactNode

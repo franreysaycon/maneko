@@ -1,31 +1,39 @@
-import { DocumentType } from '@typegoose/typegoose'
-import { LeanDocument } from 'mongoose'
-import { NextApiHandler } from 'next'
-import { getSession } from 'next-auth/client'
-import mongooseConnect from '../../../middlewares/mongooseConnect'
-import CardModel, { CardC } from '../../../models/CardModel'
-import UserModel from '../../../models/UserModel'
+import { DocumentType } from "@typegoose/typegoose"
+import { LeanDocument } from "mongoose"
+import { NextApiHandler } from "next"
+import { getSession } from "next-auth/client"
+import mongooseConnect from "../../../middlewares/mongooseConnect"
+import CardModel, { CardC } from "../../../models/CardModel"
+import UserModel from "../../../models/UserModel"
 
 interface CreateCardRequestBody {
-    type: string;
-    balance: number;
-    name: string;
-    issuer: string;
+  type: string
+  balance: number
+  name: string
+  issuer: string
 }
 
 interface CreateCardProper extends CreateCardRequestBody {
-    userId: string;
+  userId: string
 }
 interface CreateCardResponse extends CreateCardRequestBody {
-    id: string;
+  id: string
 }
 
-const getCards = async (userId: string): Promise<LeanDocument<DocumentType<CardC>>[]> => {
+const getCards = async (
+  userId: string
+): Promise<LeanDocument<DocumentType<CardC>>[]> => {
   const cards = await CardModel.find({ userId }).lean()
   return cards
 }
 
-const createCard = async ({ userId, type, balance, name, issuer }: CreateCardProper): Promise<CreateCardResponse> => {
+const createCard = async ({
+  userId,
+  type,
+  balance,
+  name,
+  issuer,
+}: CreateCardProper): Promise<CreateCardResponse> => {
   const newCard = new CardModel()
   newCard.type = type
   newCard.balance = balance
@@ -40,7 +48,7 @@ const createCard = async ({ userId, type, balance, name, issuer }: CreateCardPro
     type,
     balance,
     name,
-    issuer
+    issuer,
   }
 }
 
@@ -49,15 +57,15 @@ const CardApiHandler: NextApiHandler = async (req, res): Promise<void> => {
   const user = await UserModel.findOne({ email: session.user.email }).lean()
 
   switch (req.method) {
-    case 'GET': {
+    case "GET": {
       return res.json(await getCards(user.id))
     }
-    case 'POST': {
+    case "POST": {
       const data = req.body as CreateCardRequestBody
       return res.json(await createCard({ ...data, userId: user.id }))
     }
     default: {
-      throw Error('Method not supported.')
+      throw Error("Method not supported.")
     }
   }
 }

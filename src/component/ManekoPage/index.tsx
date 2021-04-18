@@ -1,11 +1,11 @@
-import { Box } from '@chakra-ui/react'
-import { AnimatePresence } from 'framer-motion'
-import React, { useState } from 'react'
-import Header from './Header'
-import Sidebar from './Sidebar'
+import { Box } from "@chakra-ui/react"
+import { AnimatePresence } from "framer-motion"
+import React, { useState } from "react"
+import Header from "./Header"
+import Sidebar from "./Sidebar"
 
 interface AuthPageProps {
-  children: React.ReactNode;
+  children: React.ReactNode
 }
 
 const AuthPage: React.FC<AuthPageProps> = ({ children }) => {
@@ -14,13 +14,13 @@ const AuthPage: React.FC<AuthPageProps> = ({ children }) => {
   return (
     <>
       <Box w="100vw" minH="100vh" bgColor="purple.900" p="5">
-      <Header onSidebarOpen={() => setSidebarOpen(true)} />
+        <Header onSidebarOpen={() => setSidebarOpen(true)} />
         <Box w="100%" p="3" overflowY="scroll" overflowX="hidden">
-          { children }
+          {children}
         </Box>
       </Box>
       <AnimatePresence>
-        { sidebarOpen && <Sidebar onClose={() => setSidebarOpen(false)} />}
+        {sidebarOpen && <Sidebar onClose={() => setSidebarOpen(false)} />}
       </AnimatePresence>
     </>
   )

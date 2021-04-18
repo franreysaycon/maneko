@@ -1,9 +1,9 @@
-import { ChakraProvider } from '@chakra-ui/react'
-import { AppProps } from 'next/app'
-import React from 'react'
-import theme from '../theme'
-import 'typeface-poppins'
-import { QueryClient, QueryClientProvider } from 'react-query'
+import { ChakraProvider } from "@chakra-ui/react"
+import { AppProps } from "next/app"
+import React from "react"
+import theme from "../theme"
+import "typeface-poppins"
+import { QueryClient, QueryClientProvider } from "react-query"
 
 const queryClient = new QueryClient()
 

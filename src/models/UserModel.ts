@@ -1,21 +1,23 @@
-import { getModelForClass, prop } from '@typegoose/typegoose'
-import { Timestamp } from 'bson'
+import { getModelForClass, prop } from "@typegoose/typegoose"
+import { Timestamp } from "bson"
 
 class UserC {
-    @prop()
-    public name: string;
+  @prop()
+  public name: string
 
-    @prop()
-    public email: string;
+  @prop()
+  public email: string
 
-    @prop()
-    public image: string;
+  @prop()
+  public image: string
 
-    @prop()
-    public createdAt: Timestamp;
+  @prop()
+  public createdAt: Timestamp
 
-    @prop()
-    public updatedAt: Timestamp;
+  @prop()
+  public updatedAt: Timestamp
 }
 
-export default getModelForClass(UserC, { schemaOptions: { collection: 'users' } })
+export default getModelForClass(UserC, {
+  schemaOptions: { collection: "users" },
+})

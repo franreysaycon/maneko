@@ -1,15 +1,15 @@
-import React, { useRef } from 'react'
-import { Box } from '@chakra-ui/react'
-import { motion } from 'framer-motion'
-import useClickOutside from '../../hooks/useClickOutside'
-import { useRouter } from 'next/router'
-import Link from 'next/link'
+import React, { useRef } from "react"
+import { Box } from "@chakra-ui/react"
+import { motion } from "framer-motion"
+import useClickOutside from "../../hooks/useClickOutside"
+import { useRouter } from "next/router"
+import Link from "next/link"
 
 const Container = motion(Box)
 const SidebarContainer = motion(Box)
 
 interface SidebarProps {
-  onClose: () => void;
+  onClose: () => void
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
@@ -34,12 +34,12 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
         pt="10"
         w="50%"
         position="fixed"
-        animate={{ x: '0' }}
-        initial={{ x: '-50%' }}
-        exit={{ x: '-50%' }}
+        animate={{ x: "0" }}
+        initial={{ x: "-50%" }}
+        exit={{ x: "-50%" }}
         transition={{
-          ease: 'easeIn',
-          duration: 0.3
+          ease: "easeIn",
+          duration: 0.3,
         }}
         ref={sidebarRef}
         zIndex="docked"
@@ -51,7 +51,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
             w="100%"
             fontSize="xl"
             color="white"
-            bgColor={(router.pathname === '/') ? 'red.300' : 'red.500'}
+            bgColor={router.pathname === "/" ? "red.300" : "red.500"}
             onClick={onClose}
           >
             Home
