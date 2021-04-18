@@ -4,7 +4,7 @@ type useClickOutsideFn<T> = (ref: React.RefObject<T>, onClick: () => void) => vo
 
 const useClickOutside: useClickOutsideFn<HTMLElement> = (ref, onClick) => {
   const handleClickOutside = (e) => {
-    if (ref?.current && !ref.current.contains(e.target)) {
+    if (ref.current && !ref.current.contains(e.target)) {
       onClick();
     }
   };

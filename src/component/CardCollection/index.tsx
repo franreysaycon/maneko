@@ -2,6 +2,7 @@ import { Box, Text, useDisclosure } from '@chakra-ui/react'
 import { motion, useAnimation } from 'framer-motion'
 import React, { useState } from 'react'
 import { PlusCircle } from 'react-feather'
+import TransactionList from '../TransactionList'
 import Card from './Card'
 import CardForm from './CardForm'
 import { CardT } from './types'
@@ -47,6 +48,7 @@ const CardCollection: React.FC<CardCollectionProps> = ({ cards }) => {
         h="170px"
         overflow="hidden"
         pos="relative"
+        mb="2"
       >
         <MotionBox
           display="flex"
@@ -71,9 +73,10 @@ const CardCollection: React.FC<CardCollectionProps> = ({ cards }) => {
             }
           }}
         >
-            { cards.map( card => <Card key={card.id} {...card} /> )}
+          { cards.map( card => <Card key={card._id} {...card} /> )}
         </MotionBox>
       </Box>
+      <TransactionList transactions={cards[curIndex].transactions} cardId={cards[curIndex]._id} cardType={cards[curIndex].type} />
       <CardForm isOpen={cardForm.isOpen} onClose={cardForm.onClose} />
     </Box>
   )

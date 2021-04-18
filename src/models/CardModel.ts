@@ -5,7 +5,7 @@ import { getModelForClass, pre, prop } from "@typegoose/typegoose";
         this.createdAt = new Date()
     }
 })
-class TransactionC {
+export class TransactionC {
     @prop()
     public name: string;
 

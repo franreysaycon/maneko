@@ -31,8 +31,7 @@ interface CreateCardResponse extends CreateCardRequestBody {
 }
 
 const postCard = async (data: CreateCardRequestBody): Promise<CreateCardResponse> => {
-    const response = await axios.post<CreateCardRequestBody, CreateCardResponse>("/api/cards", data)
-    return response
+    return await axios.post<CreateCardRequestBody, CreateCardResponse>("/api/cards", data)
 }
 
 const CardForm: React.FC<UseDisclosureProps> = ({
