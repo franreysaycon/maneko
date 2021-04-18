@@ -22,12 +22,12 @@ const CardCollection: React.FC<CardCollectionProps> = ({ cards }) => {
     const power = swipePower(offset.x, 300);
     if (power > 60 && curIndex -1 !== -1) {
       await controls.start({
-        x: -270*(curIndex-1),
+        x: -270*(curIndex-1) - (25*(curIndex-2)) - (curIndex === 1 ? 25 : 0),
       })
       setCurIndex(s => s - 1)
     } else if (power < -60 && curIndex + 1 < cards.length) {
       await controls.start({
-        x: -270*(curIndex+1),
+        x: -270*(curIndex+1) - (25*curIndex) + (curIndex === cards.length - 2 ? 25 : 0),
       })
       setCurIndex(s => s + 1)
     }
@@ -37,14 +37,14 @@ const CardCollection: React.FC<CardCollectionProps> = ({ cards }) => {
     <Box d="flex">
       <Box
         w="330px"
-        h="200px"
+        h="170px"
         overflow="hidden"
         pos="relative"
       >
         <MotionBox
           display="flex"
           position="relative"
-          height="200px"
+          height="170px"
           drag="x"
           dragDirectionLock
           dragConstraints={{ left: 0, right: 0 }}
