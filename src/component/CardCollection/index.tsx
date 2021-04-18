@@ -19,28 +19,27 @@ const CardCollection: React.FC<CardCollectionProps> = ({ cards }) => {
   const [curIndex, setCurIndex] = useState<number>(0)
 
   const handleDragEnd = async (_, { offset }) => {
-    const power = swipePower(offset.x, 330);
+    const power = swipePower(offset.x, 300);
     if (power > 60 && curIndex -1 !== -1) {
       await controls.start({
-        x: -345*(curIndex-1),
+        x: -270*(curIndex-1),
       })
       setCurIndex(s => s - 1)
     } else if (power < -60 && curIndex + 1 < cards.length) {
       await controls.start({
-        x: -345*(curIndex+1),
+        x: -270*(curIndex+1),
       })
       setCurIndex(s => s + 1)
     }
   };
 
   return (
-    <Box d="flex" justifyContent="center">
+    <Box d="flex">
       <Box
         w="330px"
         h="200px"
         overflow="hidden"
         pos="relative"
-        transform="translateZ(0)"
       >
         <MotionBox
           display="flex"

@@ -1,7 +1,7 @@
 import React from 'react';
-import AuthPage from '../component/AuthPage';
+import ManekoPage from '../component/ManekoPage';
 import CardCollection from '../component/CardCollection';
-import AuthGuard from '../component/common/AuthGuard';
+import AuthGuard from '../component/AuthGuard';
 
 const CARDS = [
   {
@@ -20,9 +20,9 @@ const CARDS = [
 
 const HelloWorld: React.FC = () => (
   <AuthGuard>
-    <AuthPage>
+    <ManekoPage>
       <CardCollection cards={CARDS} />
-    </AuthPage>
+    </ManekoPage>
   </AuthGuard>
 );
 
