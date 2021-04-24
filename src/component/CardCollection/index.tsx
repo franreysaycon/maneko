@@ -18,10 +18,8 @@ const swipePower = (offset: number, absDistance: number): number => {
   return (offset / absDistance) * 100
 }
 
-const createPosition = (index: number, width: number, length: number): number =>
-  -1 * width * (index + 1) -
-  CARD_MARGIN_PX * (index - 1) +
-  (index === length - 2 ? CARD_MARGIN_PX * 2 : 0)
+const createPosition = (index: number, width: number): number =>
+  -1 * width * (index + 1) - CARD_MARGIN_PX * (index + 1)
 
 const CardCollection: React.FC<CardCollectionProps> = ({ cards }) => {
   const controls = useAnimation()
@@ -60,9 +58,7 @@ const CardCollection: React.FC<CardCollectionProps> = ({ cards }) => {
 
   useLayoutEffect(() => {
     for (let i = 0; i < cards.length; i++) {
-      positions.current.push(
-        createPosition(i, cardRef.current.offsetWidth, cards.length)
-      )
+      positions.current.push(createPosition(i, cardRef.current.offsetWidth))
     }
   }, [cards.length])
 
