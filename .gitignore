@@ -6,3 +6,4 @@ tmp/
 temp/
 .next
 yarn-error.log
+.env
