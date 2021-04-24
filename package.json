@@ -5,16 +5,15 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "ts-node src/index.ts",
+    "start": "next start",
     "lint": "eslint . --ext .js,.ts,.tsx",
     "gen:theme-typings": "chakra-cli tokens ./src/theme.ts",
-    "postinstall": "yarn gen:theme-typings",
-    "typeorm": "typeorm"
+    "postinstall": "yarn gen:theme-typings"
   },
   "dependencies": {
     "@babel/core": "^7.13.15",
     "@babel/plugin-proposal-decorators": "^7.13.15",
-    "@chakra-ui/react": "^1.5.0",
+    "@chakra-ui/react": "^1.6.0",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
     "@typegoose/typegoose": "^7.6.0",

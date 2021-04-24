@@ -6,10 +6,11 @@ import { Box, Text } from "@chakra-ui/react"
 const LoginPage: React.FC = () => (
   <Box
     d="flex"
-    h="100%"
+    h="100vh"
     alignItems="center"
     justifyContent="center"
     flexDir="column"
+    bgColor="purple.900"
   >
     <Text color="white" fontSize="6xl" m="0" lineHeight="0.9">
       maneko
