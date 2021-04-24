@@ -21,7 +21,7 @@ const LoginPage: React.FC = () => (
     <GoogleLoginButton
       onClick={() =>
         signIn("google", {
-          callbackUrl: process.env.NEXT_PUBLIC_VERCEL_URL,
+          callbackUrl: process.env.NEXT_PUBLIC_LOGIN_REDIRECT_URL,
         })
       }
       style={{ width: "250px" }}
