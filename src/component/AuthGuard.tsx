@@ -11,7 +11,7 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
   const [session, loading] = useSession()
   const router = useRouter()
 
-  const isLoggedIn = session && session.user && !loading
+  const isLoggedIn = session && session.user
 
   const renderSessionLoad = () => (
     <Box d="flex" flex="1" h="100%" alignItems="center" justifyContent="center">
@@ -20,10 +20,10 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
   )
 
   useEffect(() => {
-    if (!isLoggedIn) {
+    if (!isLoggedIn && !loading) {
       router.push("/login")
     }
-  }, [router, isLoggedIn])
+  }, [isLoggedIn, loading, router])
 
   return (
     <Box bgColor="purple.900" d="flex" minH="100vh" h="100vh">
