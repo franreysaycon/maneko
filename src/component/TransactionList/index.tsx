@@ -1,9 +1,11 @@
 import { useDisclosure } from "@chakra-ui/hooks"
 import { Box, Text } from "@chakra-ui/react"
+import axios from "axios"
 import React from "react"
 import { PlusCircle } from "react-feather"
+import { useMutation, useQueryClient } from "react-query"
 import useScroll from "../../hooks/useScroll"
-import { TransactionT } from "../CardCollection/types"
+import { CardT, TransactionT } from "../CardCollection/types"
 import Transaction from "./Transaction"
 import TransactionCreateForm from "./TransactionCreateForm"
 
@@ -13,6 +15,23 @@ interface TransactionListProps {
   cardId: string
 }
 
+interface DeleteTransactionParams {
+  cardId: string
+  transId: string
+}
+
+interface DeleteTransactionResponse {
+  tid: string
+}
+
+const deleteTransaction = async (
+  data: DeleteTransactionParams
+): Promise<DeleteTransactionResponse> => {
+  return await axios.delete<unknown, DeleteTransactionResponse>(
+    `/api/cards/${data.cardId}/transactions/${data.transId}`
+  )
+}
+
 const TransactionList: React.FC<TransactionListProps> = ({
   transactions,
   cardType,
@@ -20,6 +39,40 @@ const TransactionList: React.FC<TransactionListProps> = ({
 }) => {
   const transForm = useDisclosure()
   const [scrolling, setScrolling] = useScroll()
+  const queryClient = useQueryClient()
+  const deleteTransMutation = useMutation<
+    DeleteTransactionResponse,
+    unknown,
+    DeleteTransactionParams
+  >(deleteTransaction, {
+    onMutate: async (data) => {
+      await queryClient.cancelQueries("cards")
+
+      const currentCards = queryClient.getQueryData("cards")
+
+      queryClient.setQueryData<CardT[]>("cards", (cards) => {
+        const tempCards = [...cards]
+        const cardIndex = tempCards.findIndex((card) => card._id === cardId)
+        tempCards[cardIndex].transactions = transactions.filter(
+          (trans) => trans._id !== data.transId
+        )
+        return tempCards
+      })
+
+      return { currentCards }
+    },
+    onError: (_error, _trans, context) => {
+      // @ts-ignore
+      queryClient.setQueryData("todos", context.currentCards)
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries("cards")
+    },
+  })
+
+  const deleteTrans = (transId: string) => {
+    deleteTransMutation.mutate({ cardId, transId })
+  }
 
   return (
     <Box d="flex" flexDir="column" h="100%" minH="md">
@@ -46,6 +99,7 @@ const TransactionList: React.FC<TransactionListProps> = ({
             {...trans}
             cardType={cardType}
             scrolling={scrolling}
+            deleteTransaction={deleteTrans}
           />
         ))}
       </Box>

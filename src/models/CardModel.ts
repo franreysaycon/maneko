@@ -1,4 +1,5 @@
 import { getModelForClass, pre, prop } from "@typegoose/typegoose"
+import { ObjectId } from "mongoose"
 
 @pre<TransactionC>("save", function () {
   if (!this.createdAt) {
@@ -6,6 +7,9 @@ import { getModelForClass, pre, prop } from "@typegoose/typegoose"
   }
 })
 export class TransactionC {
+  @prop()
+  public _id: ObjectId
+
   @prop()
   public name: string
 

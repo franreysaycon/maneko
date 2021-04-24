@@ -43,7 +43,7 @@ const Transaction: React.FC<TransactionProps> = ({
   const bind = useLongPress(
     () => {
       if (!scrolling) {
-        setOpenDelete(false)
+        setOpenDelete(true)
       }
     },
     {
@@ -108,10 +108,21 @@ const Transaction: React.FC<TransactionProps> = ({
             duration: 0.2,
           }}
         >
-          <Button bgColor="red.100" onClick={deleteThis} color="white">
+          <Button
+            colorScheme="red"
+            bgColor="red.500"
+            onClick={deleteThis}
+            color="white"
+          >
             Delete
           </Button>
-          <Button onClick={() => setOpenDelete(false)}>Cancel</Button>
+          <Button
+            colorScheme="ghost"
+            outline="0"
+            onClick={() => setOpenDelete(false)}
+          >
+            Cancel
+          </Button>
         </DeleteBox>
       )}
     </Box>
