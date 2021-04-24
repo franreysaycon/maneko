@@ -26,7 +26,7 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
   }, [isLoggedIn, loading, router])
 
   return (
-    <Box bgColor="purple.900" d="flex" minH="100vh" h="100vh">
+    <Box bgColor="purple.900" d="flex" minH="100vh" h="100vh" maxH="100vh">
       {isLoggedIn ? children : renderSessionLoad()}
     </Box>
   )

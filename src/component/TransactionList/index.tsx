@@ -75,7 +75,7 @@ const TransactionList: React.FC<TransactionListProps> = ({
   }
 
   return (
-    <Box d="flex" flexDir="column" h="100%" minH="md">
+    <Box d="flex" flexDir="column" h="100%" minH="md" maxH="100%" pb="5">
       <Box d="flex" justifyContent="space-between" alignItems="center" mb="2">
         <Text textTransform="uppercase" fontSize="sm" color="white">
           Card Transactions

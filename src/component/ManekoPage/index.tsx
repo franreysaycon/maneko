@@ -4,19 +4,21 @@ import React, { useState } from "react"
 import Header from "./Header"
 import Sidebar from "./Sidebar"
 
-interface AuthPageProps {
+interface MakePageProps {
   children: React.ReactNode
 }
 
-const AuthPage: React.FC<AuthPageProps> = ({ children }) => {
+const MakePage: React.FC<MakePageProps> = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
   return (
     <>
-      <Box w="100vw" minH="100vh" bgColor="purple.900" p="5">
-        <Header onSidebarOpen={() => setSidebarOpen(true)} />
-        <Box w="100%" p="3" overflowY="scroll" overflowX="hidden">
-          {children}
+      <Box w="100vw" h="100%" bgColor="purple.900" p="6">
+        <Box w="100%" h="100%" maxH="100%" overflowY="hidden">
+          <Header onSidebarOpen={() => setSidebarOpen(true)} />
+          <Box w="100%" h="100%" maxH="100%" overflowY="scroll">
+            {children}
+          </Box>
         </Box>
       </Box>
       <AnimatePresence>
@@ -26,4 +28,4 @@ const AuthPage: React.FC<AuthPageProps> = ({ children }) => {
   )
 }
 
-export default AuthPage
+export default MakePage

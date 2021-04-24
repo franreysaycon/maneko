@@ -67,7 +67,7 @@ const CardCollection: React.FC<CardCollectionProps> = ({ cards }) => {
   }, [cards.length])
 
   return (
-    <Box d="flex" flexDir="column">
+    <Box d="flex" flexDir="column" maxH="100%" h="100%">
       <Box d="flex" justifyContent="space-between" alignItems="center" mb="2">
         <Text textTransform="uppercase" fontSize="sm" color="white">
           Your Accounts

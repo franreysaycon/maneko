@@ -9,7 +9,7 @@ interface HeaderProps {
 const ChakraMenu = chakra(Menu)
 
 const Header: React.FC<HeaderProps> = ({ onSidebarOpen }) => (
-  <Box display="flex" alignItems="center">
+  <Box display="flex" alignItems="center" mb="3">
     <ChakraMenu color="white" size={35} onClick={onSidebarOpen} />
     <Text
       fontSize="3xl"
