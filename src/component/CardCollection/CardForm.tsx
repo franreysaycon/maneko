@@ -18,6 +18,7 @@ import {
 import { useForm } from "react-hook-form"
 import { useMutation, useQueryClient } from "react-query"
 import axios from "axios"
+import { CardT } from "./types"
 
 interface CreateCardRequestBody {
   type: string
@@ -26,8 +27,20 @@ interface CreateCardRequestBody {
   issuer: string
 }
 
+interface EditCardRequestBody {
+  cardData: CreateCardRequestBody
+  id: string
+}
 interface CreateCardResponse extends CreateCardRequestBody {
   id: string
+}
+
+interface EditCardResponse extends CreateCardRequestBody {
+  cardId: string
+}
+
+interface CardFormProps extends UseDisclosureProps {
+  editCard: CardT
 }
 
 const postCard = async (
@@ -39,7 +52,16 @@ const postCard = async (
   )
 }
 
-const CardForm: React.FC<UseDisclosureProps> = ({ isOpen, onClose }) => {
+const putCard = async (
+  data: EditCardRequestBody
+): Promise<EditCardResponse> => {
+  return await axios.put<CreateCardRequestBody, EditCardResponse>(
+    `/api/cards/${data.id}`,
+    data.cardData
+  )
+}
+
+const CardForm: React.FC<CardFormProps> = ({ isOpen, onClose, editCard }) => {
   const {
     register,
     handleSubmit,
@@ -47,28 +69,38 @@ const CardForm: React.FC<UseDisclosureProps> = ({ isOpen, onClose }) => {
     watch,
   } = useForm<CreateCardRequestBody>()
   const queryClient = useQueryClient()
-  const cardMutation = useMutation(postCard, {
+  const createCardMutation = useMutation(postCard, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("cards")
+    },
+  })
+  const editCardMutation = useMutation(putCard, {
     onSuccess: () => {
       queryClient.invalidateQueries("cards")
     },
   })
 
   useEffect(() => {
-    if (cardMutation.isSuccess) {
+    if (createCardMutation.isSuccess || editCardMutation.isSuccess) {
       onClose()
     }
-  }, [cardMutation.isSuccess])
+  }, [createCardMutation.isSuccess, editCardMutation.isSuccess])
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent mt="25px" mb="0px">
-        <ModalHeader>Create Account</ModalHeader>
-        <ModalCloseButton onClick={onClose} />
+        <ModalHeader>
+          {editCard ? "Edit Account" : "Create Account"}
+        </ModalHeader>
+        <ModalCloseButton onClick={onClose} outline="0" />
         <ModalBody>
           <FormControl mb="3">
             <FormLabel textTransform="uppercase">Transaction Type</FormLabel>
-            <Select {...register("type")}>
+            <Select
+              {...register("type")}
+              defaultValue={editCard && editCard.type}
+            >
               <option value="atm">ATM</option>
               <option value="credit card">CREDIT CARD</option>
             </Select>
@@ -80,6 +112,7 @@ const CardForm: React.FC<UseDisclosureProps> = ({ isOpen, onClose }) => {
             <Input
               type="text"
               {...register("name", { required: true, maxLength: 100 })}
+              defaultValue={editCard && editCard.name}
             />
             {errors.name && (
               <FormHelperText color="red.300">{errors.name}</FormHelperText>
@@ -91,14 +124,21 @@ const CardForm: React.FC<UseDisclosureProps> = ({ isOpen, onClose }) => {
                 ? "Outstanding Balance"
                 : "Current Balance"}
             </FormLabel>
-            <Input type="number" {...register("balance", { required: true })} />
+            <Input
+              type="number"
+              {...register("balance", { required: true })}
+              defaultValue={editCard && editCard.balance}
+            />
             {errors.name && (
               <FormHelperText color="red.300">{errors.name}</FormHelperText>
             )}
           </FormControl>
           <FormControl>
             <FormLabel textTransform="uppercase">Issuer</FormLabel>
-            <Select {...register("issuer")}>
+            <Select
+              {...register("issuer")}
+              defaultValue={editCard && editCard.issuer}
+            >
               <option value="bdo_atm">BDO SAVINGS ACCOUNT</option>
               <option value="bpi_cc">BPI CREDIT CARD</option>
               <option value="bpi_atm">BPI SAVING ACCOUNT</option>
@@ -109,19 +149,24 @@ const CardForm: React.FC<UseDisclosureProps> = ({ isOpen, onClose }) => {
         </ModalBody>
         <ModalFooter>
           <Button
-            isLoading={cardMutation.isLoading}
+            isLoading={createCardMutation.isLoading}
             bgColor="blue.500"
             mr={3}
-            onClick={handleSubmit(
-              async (data) => await cardMutation.mutate(data)
-            )}
+            onClick={handleSubmit(async (data) => {
+              return editCard
+                ? await editCardMutation.mutate({
+                    cardData: data,
+                    id: editCard._id,
+                  })
+                : await createCardMutation.mutate(data)
+            })}
             color="white"
             textTransform="uppercase"
           >
-            Create Card
+            {editCard ? "Edit Card" : "Create Card"}
           </Button>
           <Button
-            disabled={cardMutation.isLoading}
+            disabled={createCardMutation.isLoading}
             bgColor="red.500"
             mr={3}
             onClick={onClose}

@@ -20,7 +20,20 @@ const swipePower = (offset: number, absDistance: number): number => {
 const CardCollection: React.FC<CardCollectionProps> = ({ cards }) => {
   const controls = useAnimation()
   const [curIndex, setCurIndex] = useState<number>(0)
+  const [editCardId, setEditCardId] = useState<string>("")
   const cardForm = useDisclosure()
+
+  const openEdit = (id) => {
+    setEditCardId(id)
+    cardForm.onOpen()
+  }
+
+  const closeForm = () => {
+    if (editCardId) {
+      setEditCardId("")
+    }
+    cardForm.onClose()
+  }
 
   const handleDragEnd = async (_, { offset }) => {
     const power = swipePower(offset.x, 300)
@@ -76,7 +89,7 @@ const CardCollection: React.FC<CardCollectionProps> = ({ cards }) => {
           }}
         >
           {cards.map((card) => (
-            <Card key={card._id} {...card} />
+            <Card key={card._id} {...card} editCard={openEdit} />
           ))}
         </MotionBox>
       </Box>
@@ -85,7 +98,13 @@ const CardCollection: React.FC<CardCollectionProps> = ({ cards }) => {
         cardId={cards[curIndex]._id}
         cardType={cards[curIndex].type}
       />
-      <CardForm isOpen={cardForm.isOpen} onClose={cardForm.onClose} />
+      <CardForm
+        isOpen={cardForm.isOpen}
+        onClose={closeForm}
+        editCard={
+          editCardId ? cards.find((card) => card._id === editCardId) : null
+        }
+      />
     </Box>
   )
 }

@@ -30,7 +30,6 @@ const editCard = async ({
   card.name = name
   card.issuer = issuer
   card.userId = userId
-  card.transactions = []
   await card.save()
 
   return {

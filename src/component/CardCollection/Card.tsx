@@ -1,5 +1,6 @@
-import { Box, Text } from "@chakra-ui/react"
+import { Box, chakra, Text } from "@chakra-ui/react"
 import React from "react"
+import { Edit } from "react-feather"
 import { CardT } from "./types"
 
 const ISSUER_COLORS = {
@@ -9,7 +10,20 @@ const ISSUER_COLORS = {
   ing_atm: "#ff6201",
 }
 
-const Card: React.FC<CardT> = ({ type, balance, name, issuer }) => (
+interface CardProps extends CardT {
+  editCard: (id: string) => void
+}
+
+const ChakraEdit = chakra(Edit)
+
+const Card: React.FC<CardProps> = ({
+  _id,
+  type,
+  balance,
+  name,
+  issuer,
+  editCard,
+}) => (
   <Box
     d="flex"
     flexDir="column"
@@ -20,8 +34,11 @@ const Card: React.FC<CardT> = ({ type, balance, name, issuer }) => (
     borderRadius="xl"
     bgColor={ISSUER_COLORS[issuer]}
   >
-    <Box d="flex" textTransform="uppercase" fontSize="sm" color="white">
-      {type}
+    <Box d="flex" justifyContent="space-between">
+      <Box d="flex" textTransform="uppercase" fontSize="sm" color="white">
+        {type}
+      </Box>
+      <ChakraEdit color="white" size={15} onClick={() => editCard(_id)} />
     </Box>
     <Box d="flex" h="100%" flexDir="column" justifyContent="center">
       {type === "credit card" && (
