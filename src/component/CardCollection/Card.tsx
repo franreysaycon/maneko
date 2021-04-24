@@ -1,5 +1,5 @@
 import { Box, chakra, Text } from "@chakra-ui/react"
-import React from "react"
+import React, { forwardRef } from "react"
 import { Edit } from "react-feather"
 import { CardT } from "./types"
 
@@ -16,47 +16,44 @@ interface CardProps extends CardT {
 
 const ChakraEdit = chakra(Edit)
 
-const Card: React.FC<CardProps> = ({
-  _id,
-  type,
-  balance,
-  name,
-  issuer,
-  editCard,
-}) => (
-  <Box
-    d="flex"
-    flexDir="column"
-    p="3"
-    flex="1 0 100%"
-    maxWidth="280px"
-    h="170px"
-    borderRadius="xl"
-    bgColor={ISSUER_COLORS[issuer]}
-  >
-    <Box d="flex" justifyContent="space-between">
-      <Box d="flex" textTransform="uppercase" fontSize="sm" color="white">
-        {type}
+const Card = forwardRef<HTMLDivElement, CardProps>(
+  ({ _id, type, balance, name, issuer, editCard }, ref) => (
+    <Box
+      d="flex"
+      flexDir="column"
+      p="3"
+      flex="1 0 100%"
+      h="170px"
+      borderRadius="xl"
+      bgColor={ISSUER_COLORS[issuer]}
+      ref={ref}
+    >
+      <Box d="flex" justifyContent="space-between">
+        <Box d="flex" textTransform="uppercase" fontSize="sm" color="white">
+          {type}
+        </Box>
+        <ChakraEdit color="white" size={15} onClick={() => editCard(_id)} />
       </Box>
-      <ChakraEdit color="white" size={15} onClick={() => editCard(_id)} />
-    </Box>
-    <Box d="flex" h="100%" flexDir="column" justifyContent="center">
-      {type === "credit card" && (
+      <Box d="flex" h="100%" flexDir="column" justifyContent="center">
+        {type === "credit card" && (
+          <Text textTransform="uppercase" fontSize="sm" color="white">
+            outstanding balance
+          </Text>
+        )}
+        <Text color="white" fontSize="xl">{`PHP ${balance}`}</Text>
+      </Box>
+      <Box d="flex" textTransform="uppercase" justifyContent="space-between">
         <Text textTransform="uppercase" fontSize="sm" color="white">
-          outstanding balance
+          {name}
         </Text>
-      )}
-      <Text color="white" fontSize="xl">{`PHP ${balance}`}</Text>
+        <Text textTransform="uppercase" fontSize="sm" color="white">
+          {issuer.split("_")[0]}
+        </Text>
+      </Box>
     </Box>
-    <Box d="flex" textTransform="uppercase" justifyContent="space-between">
-      <Text textTransform="uppercase" fontSize="sm" color="white">
-        {name}
-      </Text>
-      <Text textTransform="uppercase" fontSize="sm" color="white">
-        {issuer.split("_")[0]}
-      </Text>
-    </Box>
-  </Box>
+  )
 )
+
+Card.displayName = "Card"
 
 export default Card

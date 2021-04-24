@@ -1,6 +1,6 @@
 import { Box, Text, useDisclosure } from "@chakra-ui/react"
 import { motion, useAnimation } from "framer-motion"
-import React, { useState } from "react"
+import React, { useLayoutEffect, useRef, useState } from "react"
 import { PlusCircle } from "react-feather"
 import TransactionList from "../TransactionList"
 import Card from "./Card"
@@ -11,6 +11,7 @@ interface CardCollectionProps {
   cards: CardT[]
 }
 
+const CARD_MARGIN_PX = 15
 const MotionBox = motion(Box)
 
 const swipePower = (offset: number, absDistance: number): number => {
@@ -20,8 +21,10 @@ const swipePower = (offset: number, absDistance: number): number => {
 const CardCollection: React.FC<CardCollectionProps> = ({ cards }) => {
   const controls = useAnimation()
   const [curIndex, setCurIndex] = useState<number>(0)
+  const [cardWidth, setCardWidth] = useState<number>(0)
   const [editCardId, setEditCardId] = useState<string>("")
   const cardForm = useDisclosure()
+  const cardRef = useRef<HTMLDivElement>()
 
   const openEdit = (id) => {
     setEditCardId(id)
@@ -39,22 +42,20 @@ const CardCollection: React.FC<CardCollectionProps> = ({ cards }) => {
     const power = swipePower(offset.x, 300)
     if (power > 60 && curIndex - 1 !== -1) {
       await controls.start({
-        x:
-          -270 * (curIndex - 1) -
-          25 * (curIndex - 2) -
-          (curIndex === 1 ? 25 : 0),
+        x: -1 * cardWidth * (curIndex - 1) - CARD_MARGIN_PX * (curIndex - 1),
       })
       setCurIndex((s) => s - 1)
     } else if (power < -60 && curIndex + 1 < cards.length) {
       await controls.start({
-        x:
-          -270 * (curIndex + 1) -
-          25 * curIndex +
-          (curIndex === cards.length - 2 ? 25 : 0),
+        x: -1 * cardWidth * (curIndex + 1) - CARD_MARGIN_PX * (curIndex + 1),
       })
       setCurIndex((s) => s + 1)
     }
   }
+
+  useLayoutEffect(() => {
+    setCardWidth(cardRef.current.offsetWidth)
+  }, [])
 
   return (
     <Box d="flex" flexDir="column">
@@ -81,15 +82,15 @@ const CardCollection: React.FC<CardCollectionProps> = ({ cards }) => {
           layout
           css={{
             ">div": {
-              marginRight: "15px",
+              marginRight: CARD_MARGIN_PX,
             },
             ">div:last-child": {
-              marginRight: "0px",
+              marginRight: 0,
             },
           }}
         >
           {cards.map((card) => (
-            <Card key={card._id} {...card} editCard={openEdit} />
+            <Card key={card._id} {...card} editCard={openEdit} ref={cardRef} />
           ))}
         </MotionBox>
       </Box>
