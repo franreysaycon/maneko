@@ -8,6 +8,7 @@ const ISSUER_COLORS = {
   bpi_cc: "#2B4162",
   bdo_atm: "#003375",
   ing_atm: "#ff6201",
+  union_atm: "#f79300",
 }
 
 interface CardProps extends CardT {
@@ -22,7 +23,7 @@ const Card = forwardRef<HTMLDivElement, CardProps>(
       d="flex"
       flexDir="column"
       p="3"
-      flex="1 0 80%"
+      flex="1 0 85%"
       h="170px"
       borderRadius="xl"
       bgColor={ISSUER_COLORS[issuer]}
