@@ -18,13 +18,18 @@ const swipePower = (offset: number, absDistance: number): number => {
   return (offset / absDistance) * 100
 }
 
+const createPosition = (index: number, width: number, length: number): number =>
+  -1 * width * (index + 1) -
+  CARD_MARGIN_PX * (index - 1) +
+  (index === length - 2 ? CARD_MARGIN_PX * 2 : 0)
+
 const CardCollection: React.FC<CardCollectionProps> = ({ cards }) => {
   const controls = useAnimation()
   const [curIndex, setCurIndex] = useState<number>(0)
-  const [cardWidth, setCardWidth] = useState<number>(0)
   const [editCardId, setEditCardId] = useState<string>("")
   const cardForm = useDisclosure()
   const cardRef = useRef<HTMLDivElement>()
+  const positions = useRef<number[]>([0])
 
   const openEdit = (id) => {
     setEditCardId(id)
@@ -42,20 +47,24 @@ const CardCollection: React.FC<CardCollectionProps> = ({ cards }) => {
     const power = swipePower(offset.x, 300)
     if (power > 60 && curIndex - 1 !== -1) {
       await controls.start({
-        x: -1 * cardWidth * (curIndex - 1) - CARD_MARGIN_PX * (curIndex - 1),
+        x: positions.current[curIndex - 1],
       })
       setCurIndex((s) => s - 1)
     } else if (power < -60 && curIndex + 1 < cards.length) {
       await controls.start({
-        x: -1 * cardWidth * (curIndex + 1) - CARD_MARGIN_PX * (curIndex + 1),
+        x: positions.current[curIndex + 1],
       })
       setCurIndex((s) => s + 1)
     }
   }
 
   useLayoutEffect(() => {
-    setCardWidth(cardRef.current.offsetWidth)
-  }, [])
+    for (let i = 0; i < cards.length; i++) {
+      positions.current.push(
+        createPosition(i, cardRef.current.offsetWidth, cards.length)
+      )
+    }
+  }, [cards.length])
 
   return (
     <Box d="flex" flexDir="column">
