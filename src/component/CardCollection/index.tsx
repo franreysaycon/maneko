@@ -18,8 +18,10 @@ const swipePower = (offset: number, absDistance: number): number => {
   return (offset / absDistance) * 100
 }
 
-const createPosition = (index: number, width: number): number =>
-  -1 * width * (index + 1) - CARD_MARGIN_PX * (index + 1)
+const createPosition = (index: number, width: number, length: number): number =>
+  -1 * width * (index + 1) -
+  CARD_MARGIN_PX * (index - 1) +
+  (index === length - 2 ? CARD_MARGIN_PX * 2 : 0)
 
 const CardCollection: React.FC<CardCollectionProps> = ({ cards }) => {
   const controls = useAnimation()
@@ -58,7 +60,9 @@ const CardCollection: React.FC<CardCollectionProps> = ({ cards }) => {
 
   useLayoutEffect(() => {
     for (let i = 0; i < cards.length; i++) {
-      positions.current.push(createPosition(i, cardRef.current.offsetWidth))
+      positions.current.push(
+        createPosition(i, cardRef.current.offsetWidth, cards.length)
+      )
     }
   }, [cards.length])
 
@@ -70,11 +74,11 @@ const CardCollection: React.FC<CardCollectionProps> = ({ cards }) => {
         </Text>
         <PlusCircle color="white" size={20} onClick={cardForm.onOpen} />
       </Box>
-      <Box w="330px" h="170px" overflow="hidden" pos="relative" mb="2">
+      <Box w="100%" h="170px" overflow="hidden" pos="relative" mb="2">
         <MotionBox
-          display="flex"
-          position="relative"
-          height="170px"
+          d="flex"
+          pos="relative"
+          h="170px"
           drag="x"
           dragDirectionLock
           dragConstraints={{ left: 0, right: 0 }}
