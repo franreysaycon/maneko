@@ -51,8 +51,8 @@ const CardSpecHandler: NextApiHandler = async (req, res): Promise<void> => {
   switch (req.method) {
     case "PUT": {
       const data = req.body as EditCardRequestBody
-      await editCard({ ...data, cardId, userId: user.id })
-      return res.json({ success: true })
+      const response = await editCard({ ...data, cardId, userId: user.id })
+      return res.json(response)
     }
     default: {
       throw Error("Method not supported.")
