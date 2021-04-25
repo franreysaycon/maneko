@@ -22,6 +22,7 @@ const TYPE_MAPPING = {
 }
 
 const DeleteBox = motion(Box)
+const TransactionContainer = motion(Box)
 
 const COLOR_MAP = {
   neg: "red.500",
@@ -55,7 +56,7 @@ const Transaction: React.FC<TransactionProps> = ({
   }
 
   return (
-    <Box
+    <TransactionContainer
       bgColor="white"
       pos="relative"
       borderRadius="15px"
@@ -64,6 +65,9 @@ const Transaction: React.FC<TransactionProps> = ({
       p="15px"
       h="fit-content"
       {...bind}
+      initial={{ opacity: 0, y: -50 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0 }}
     >
       <Box d="flex" justifyContent="space-between">
         <Text fontSize="xs" textTransform="uppercase">
@@ -125,7 +129,7 @@ const Transaction: React.FC<TransactionProps> = ({
           </Button>
         </DeleteBox>
       )}
-    </Box>
+    </TransactionContainer>
   )
 }
 

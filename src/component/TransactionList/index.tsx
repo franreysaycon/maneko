@@ -91,7 +91,7 @@ const TransactionList: React.FC<TransactionListProps> = ({
         <TransactionSkeleton />
       ) : (
         <Box
-          h="390px"
+          h="50vh"
           d="flex"
           overflowY="scroll"
           flexDir="column"
@@ -110,6 +110,11 @@ const TransactionList: React.FC<TransactionListProps> = ({
               deleteTransaction={deleteTrans}
             />
           ))}
+          {transactions.length === 0 && (
+            <Text fontSize="xs" d="flext" color="white" alignSelf="center">
+              No transactions yet. Click (+) to add.
+            </Text>
+          )}
         </Box>
       )}
       <TransactionCreateForm

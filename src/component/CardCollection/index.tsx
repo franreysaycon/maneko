@@ -5,6 +5,7 @@ import { PlusCircle } from "react-feather"
 import TransactionList from "../TransactionList"
 import Card from "./Card"
 import CardForm from "./CardForm"
+import NoCard from "./NoCard"
 import { CardT } from "./types"
 
 interface CardCollectionProps {
@@ -90,38 +91,42 @@ const CardCollection: React.FC<CardCollectionProps> = ({ cards, loading }) => {
         borderRadius={loading ? 15 : 0}
       >
         <Box w="100%" h="170px" overflow="hidden" pos="relative">
-          <MotionBox
-            d="flex"
-            pos="relative"
-            h="170px"
-            drag="x"
-            dragDirectionLock
-            dragConstraints={{ left: 0, right: 0 }}
-            dragMomentum={false}
-            animate={controls}
-            transition={{
-              x: { type: "spring", stiffness: 600, damping: 100 },
-            }}
-            onDragEnd={handleDragEnd}
-            layout
-            css={{
-              ">div": {
-                marginRight: CARD_MARGIN_PX,
-              },
-              ">div:last-child": {
-                marginRight: 0,
-              },
-            }}
-          >
-            {cards.map((card) => (
-              <Card
-                key={card._id}
-                {...card}
-                editCard={openEdit}
-                ref={cardRef}
-              />
-            ))}
-          </MotionBox>
+          {cards.length ? (
+            <MotionBox
+              d="flex"
+              pos="relative"
+              h="170px"
+              drag="x"
+              dragDirectionLock
+              dragConstraints={{ left: 0, right: 0 }}
+              dragMomentum={false}
+              animate={controls}
+              transition={{
+                x: { type: "spring", stiffness: 600, damping: 100 },
+              }}
+              onDragEnd={handleDragEnd}
+              layout
+              css={{
+                ">div": {
+                  marginRight: CARD_MARGIN_PX,
+                },
+                ">div:last-child": {
+                  marginRight: 0,
+                },
+              }}
+            >
+              {cards.map((card) => (
+                <Card
+                  key={card._id}
+                  {...card}
+                  editCard={openEdit}
+                  ref={cardRef}
+                />
+              ))}
+            </MotionBox>
+          ) : (
+            <NoCard />
+          )}
         </Box>
       </Skeleton>
       <TransactionList

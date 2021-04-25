@@ -1,11 +1,15 @@
 import React from "react"
 import ManekoPage from "../component/ManekoPage"
-import CardCollection from "../component/CardCollection"
 import AuthGuard from "../component/AuthGuard"
 import axios from "axios"
 import { CardT } from "../component/CardCollection/types"
 import { useQuery } from "react-query"
 import { getSession } from "next-auth/client"
+import dynamic from "next/dynamic"
+
+const CardCollection = dynamic(() => import("../component/CardCollection"), {
+  ssr: false,
+})
 
 const getCards = async (): Promise<CardT[]> => {
   const response = await axios.get<CardT[]>("/api/cards")
