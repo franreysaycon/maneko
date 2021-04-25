@@ -16,7 +16,7 @@ const LoginPage: React.FC = () => (
       maneko
     </Text>
     <Text color="white" fontSize="xl" mb="3">
-      Track your accounts and budget.
+      Track your PH accounts.
     </Text>
     <GoogleLoginButton
       onClick={() =>
