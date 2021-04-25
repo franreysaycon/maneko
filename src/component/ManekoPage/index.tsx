@@ -13,7 +13,7 @@ const MakePage: React.FC<MakePageProps> = ({ children }) => {
 
   return (
     <>
-      <Box w="100vw" h="100%" bgColor="purple.900">
+      <Box w="100vw" h="100%" overflowY="hidden" bgColor="purple.900">
         <Header onSidebarOpen={() => setSidebarOpen(true)} />
         <Box w="100%" h="100%" maxH="100%" overflowY="hidden" p="6" pt="0">
           {children}
