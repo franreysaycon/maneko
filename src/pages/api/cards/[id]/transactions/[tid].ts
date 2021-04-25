@@ -21,9 +21,9 @@ const deleteTransaction: deleteTransactionFn = async ({
   const dTransaction = card.transactions.find((ct) => `${ct._id}` === transId)
   card.transactions = card.transactions.filter((ct) => `${ct._id}` !== transId)
   if (dTransaction.type === "neg") {
-    card.balance += dTransaction.value
+    card.balance += +dTransaction.value
   } else {
-    card.balance -= dTransaction.value
+    card.balance -= +dTransaction.value
   }
 
   await card.save()

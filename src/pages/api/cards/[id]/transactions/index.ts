@@ -26,9 +26,9 @@ const createTransaction: createTransactionFn = async ({
   const card = await CardModel.findOne({ _id: cardId, userId })
   card.transactions = [...card.transactions, data as TransactionC]
   if (data.type === "neg") {
-    card.balance -= data.value
+    card.balance -= +data.value
   } else {
-    card.balance += data.value
+    card.balance += +data.value
   }
   await card.save()
 }
