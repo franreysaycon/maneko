@@ -91,7 +91,7 @@ const TransactionList: React.FC<TransactionListProps> = ({
         <TransactionSkeleton />
       ) : (
         <Box
-          h="380px"
+          h="390px"
           d="flex"
           overflowY="scroll"
           flexDir="column"

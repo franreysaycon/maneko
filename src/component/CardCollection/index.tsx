@@ -20,9 +20,7 @@ const swipePower = (offset: number, absDistance: number): number => {
 }
 
 const createPosition = (index: number, width: number, length: number): number =>
-  -1 * width * (index + 1) -
-  CARD_MARGIN_PX * (index - 1) +
-  (index === length - 2 ? CARD_MARGIN_PX * 2 : 0)
+  -1 * width * (index + 1) - CARD_MARGIN_PX * (index + 1)
 
 const EMPTY_CARD = {
   transactions: [],
@@ -54,12 +52,12 @@ const CardCollection: React.FC<CardCollectionProps> = ({ cards, loading }) => {
 
   const handleDragEnd = async (_, { offset }) => {
     const power = swipePower(offset.x, 300)
-    if (power > 60 && curIndex - 1 !== -1) {
+    if (power > 45 && curIndex - 1 !== -1) {
       await controls.start({
         x: positions.current[curIndex - 1],
       })
       setCurIndex((s) => s - 1)
-    } else if (power < -60 && curIndex + 1 < cards.length) {
+    } else if (power < -45 && curIndex + 1 < cards.length) {
       await controls.start({
         x: positions.current[curIndex + 1],
       })
