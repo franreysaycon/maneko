@@ -8,11 +8,13 @@ import useScroll from "../../hooks/useScroll"
 import { CardT, TransactionT } from "../CardCollection/types"
 import Transaction from "./Transaction"
 import TransactionCreateForm from "./TransactionCreateForm"
+import TransactionSkeleton from "./TransactionSkeleton"
 
 interface TransactionListProps {
   transactions: TransactionT[]
   cardType: string
   cardId: string
+  loading: boolean
 }
 
 interface DeleteTransactionParams {
@@ -36,6 +38,7 @@ const TransactionList: React.FC<TransactionListProps> = ({
   transactions,
   cardType,
   cardId,
+  loading,
 }) => {
   const transForm = useDisclosure()
   const [scrolling, setScrolling] = useScroll()
@@ -75,34 +78,40 @@ const TransactionList: React.FC<TransactionListProps> = ({
   }
 
   return (
-    <Box d="flex" flexDir="column" h="100%" minH="md" maxH="100%" pb="5">
+    <Box d="flex" flexDir="column">
       <Box d="flex" justifyContent="space-between" alignItems="center" mb="2">
         <Text textTransform="uppercase" fontSize="sm" color="white">
           Card Transactions
         </Text>
-        <PlusCircle color="white" size={20} onClick={transForm.onOpen} />
+        {!loading && (
+          <PlusCircle color="white" size={20} onClick={transForm.onOpen} />
+        )}
       </Box>
-      <Box
-        h="100%"
-        d="flex"
-        overflowY="scroll"
-        flexDir="column"
-        css={{
-          "> div": { marginBottom: "10px" },
-          "> div:last-child": { marginBottom: "0px" },
-        }}
-        onScroll={() => setScrolling(true)}
-      >
-        {transactions.map((trans) => (
-          <Transaction
-            key={trans._id}
-            {...trans}
-            cardType={cardType}
-            scrolling={scrolling}
-            deleteTransaction={deleteTrans}
-          />
-        ))}
-      </Box>
+      {loading ? (
+        <TransactionSkeleton />
+      ) : (
+        <Box
+          h="400px"
+          d="flex"
+          overflowY="scroll"
+          flexDir="column"
+          css={{
+            "> div": { marginBottom: "10px" },
+            "> div:last-child": { marginBottom: "0px" },
+          }}
+          onScroll={() => setScrolling(true)}
+        >
+          {transactions.map((trans) => (
+            <Transaction
+              key={trans._id}
+              {...trans}
+              cardType={cardType}
+              scrolling={scrolling}
+              deleteTransaction={deleteTrans}
+            />
+          ))}
+        </Box>
+      )}
       <TransactionCreateForm
         cardId={cardId}
         type={cardType}

@@ -5,7 +5,6 @@ import AuthGuard from "../component/AuthGuard"
 import axios from "axios"
 import { CardT } from "../component/CardCollection/types"
 import { useQuery } from "react-query"
-import { Spinner, Box } from "@chakra-ui/react"
 
 const getCards = async (): Promise<CardT[]> => {
   const response = await axios.get<CardT[]>("/api/cards")
@@ -18,19 +17,7 @@ const Homepage: React.FC = () => {
   return (
     <AuthGuard>
       <ManekoPage>
-        {isLoading ? (
-          <Box
-            w="100%"
-            h="100%"
-            d="flex"
-            alignItems="center"
-            justifyContent="center"
-          >
-            <Spinner color="white" />
-          </Box>
-        ) : (
-          <CardCollection cards={data} />
-        )}
+        <CardCollection cards={data} loading={isLoading} />
       </ManekoPage>
     </AuthGuard>
   )

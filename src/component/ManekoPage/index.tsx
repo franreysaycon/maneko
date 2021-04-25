@@ -13,12 +13,10 @@ const MakePage: React.FC<MakePageProps> = ({ children }) => {
 
   return (
     <>
-      <Box w="100vw" h="100%" bgColor="purple.900" p="6">
-        <Box w="100%" h="100%" maxH="100%" overflowY="hidden">
-          <Header onSidebarOpen={() => setSidebarOpen(true)} />
-          <Box w="100%" h="100%" maxH="100%" overflowY="scroll">
-            {children}
-          </Box>
+      <Box w="100vw" h="100%" bgColor="purple.900">
+        <Header onSidebarOpen={() => setSidebarOpen(true)} />
+        <Box w="100%" h="100%" maxH="100%" overflowY="hidden" p="6" pt="0">
+          {children}
         </Box>
       </Box>
       <AnimatePresence>

@@ -1,4 +1,4 @@
-import { Box, Text, useDisclosure } from "@chakra-ui/react"
+import { Box, Skeleton, Text, useDisclosure } from "@chakra-ui/react"
 import { motion, useAnimation } from "framer-motion"
 import React, { useLayoutEffect, useRef, useState } from "react"
 import { PlusCircle } from "react-feather"
@@ -9,6 +9,7 @@ import { CardT } from "./types"
 
 interface CardCollectionProps {
   cards: CardT[]
+  loading: boolean
 }
 
 const CARD_MARGIN_PX = 15
@@ -23,13 +24,21 @@ const createPosition = (index: number, width: number, length: number): number =>
   CARD_MARGIN_PX * (index - 1) +
   (index === length - 2 ? CARD_MARGIN_PX * 2 : 0)
 
-const CardCollection: React.FC<CardCollectionProps> = ({ cards }) => {
+const EMPTY_CARD = {
+  transactions: [],
+  _id: "",
+  type: "",
+}
+
+const CardCollection: React.FC<CardCollectionProps> = ({ cards, loading }) => {
   const controls = useAnimation()
   const [curIndex, setCurIndex] = useState<number>(0)
   const [editCardId, setEditCardId] = useState<string>("")
   const cardForm = useDisclosure()
   const cardRef = useRef<HTMLDivElement>()
   const positions = useRef<number[]>([0])
+
+  const currentCard = loading ? EMPTY_CARD : cards[curIndex]
 
   const openEdit = (id) => {
     setEditCardId(id)
@@ -67,46 +76,61 @@ const CardCollection: React.FC<CardCollectionProps> = ({ cards }) => {
   }, [cards.length])
 
   return (
-    <Box d="flex" flexDir="column" maxH="100%" h="100%">
+    <Box d="flex" flexDir="column">
       <Box d="flex" justifyContent="space-between" alignItems="center" mb="2">
         <Text textTransform="uppercase" fontSize="sm" color="white">
           Your Accounts
         </Text>
-        <PlusCircle color="white" size={20} onClick={cardForm.onOpen} />
+        {!loading && (
+          <PlusCircle color="white" size={20} onClick={cardForm.onOpen} />
+        )}
       </Box>
-      <Box w="100%" h="170px" overflow="hidden" pos="relative" mb="2">
-        <MotionBox
-          d="flex"
-          pos="relative"
-          h="170px"
-          drag="x"
-          dragDirectionLock
-          dragConstraints={{ left: 0, right: 0 }}
-          dragMomentum={false}
-          animate={controls}
-          transition={{
-            x: { type: "spring", stiffness: 600, damping: 100 },
-          }}
-          onDragEnd={handleDragEnd}
-          layout
-          css={{
-            ">div": {
-              marginRight: CARD_MARGIN_PX,
-            },
-            ">div:last-child": {
-              marginRight: 0,
-            },
-          }}
-        >
-          {cards.map((card) => (
-            <Card key={card._id} {...card} editCard={openEdit} ref={cardRef} />
-          ))}
-        </MotionBox>
-      </Box>
+      <Skeleton
+        isLoaded={!loading}
+        opacity={loading ? 0.1 : 1}
+        mb="2"
+        borderRadius={loading ? 15 : 0}
+      >
+        <Box w="100%" h="170px" overflow="hidden" pos="relative">
+          <MotionBox
+            d="flex"
+            pos="relative"
+            h="170px"
+            drag="x"
+            dragDirectionLock
+            dragConstraints={{ left: 0, right: 0 }}
+            dragMomentum={false}
+            animate={controls}
+            transition={{
+              x: { type: "spring", stiffness: 600, damping: 100 },
+            }}
+            onDragEnd={handleDragEnd}
+            layout
+            css={{
+              ">div": {
+                marginRight: CARD_MARGIN_PX,
+              },
+              ">div:last-child": {
+                marginRight: 0,
+              },
+            }}
+          >
+            {cards.map((card) => (
+              <Card
+                key={card._id}
+                {...card}
+                editCard={openEdit}
+                ref={cardRef}
+              />
+            ))}
+          </MotionBox>
+        </Box>
+      </Skeleton>
       <TransactionList
-        transactions={cards[curIndex].transactions}
-        cardId={cards[curIndex]._id}
-        cardType={cards[curIndex].type}
+        transactions={currentCard.transactions}
+        cardId={currentCard._id}
+        cardType={currentCard.type}
+        loading={loading}
       />
       <CardForm
         isOpen={cardForm.isOpen}
