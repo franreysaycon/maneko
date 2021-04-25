@@ -12,7 +12,7 @@ const ISSUER_COLORS = {
 }
 
 interface CardProps extends CardT {
-  editCard: (id: string) => void
+  editCard: () => void
 }
 
 const ChakraEdit = chakra(Edit)
@@ -33,7 +33,7 @@ const Card = forwardRef<HTMLDivElement, CardProps>(
         <Box d="flex" textTransform="uppercase" fontSize="sm" color="white">
           {type}
         </Box>
-        <ChakraEdit color="white" size={15} onClick={() => editCard(_id)} />
+        <ChakraEdit color="white" size={15} onClick={editCard} />
       </Box>
       <Box d="flex" h="100%" flexDir="column" justifyContent="center">
         {type === "credit card" && (

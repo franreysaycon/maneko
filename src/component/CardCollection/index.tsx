@@ -23,30 +23,24 @@ const swipePower = (offset: number, absDistance: number): number => {
 const createPosition = (index: number, width: number, length: number): number =>
   -1 * width * (index + 1) - CARD_MARGIN_PX * (index + 1)
 
-const EMPTY_CARD = {
-  transactions: [],
-  _id: "",
-  type: "",
-}
-
 const CardCollection: React.FC<CardCollectionProps> = ({ cards, loading }) => {
   const controls = useAnimation()
   const [curIndex, setCurIndex] = useState<number>(0)
-  const [editCardId, setEditCardId] = useState<string>("")
+  const [editMode, setEditMode] = useState<boolean>(false)
   const cardForm = useDisclosure()
   const cardRef = useRef<HTMLDivElement>()
   const positions = useRef<number[]>([0])
 
-  const currentCard = loading ? EMPTY_CARD : cards[curIndex]
+  const currentCard = loading ? null : cards[curIndex]
 
-  const openEdit = (id) => {
-    setEditCardId(id)
+  const openEdit = () => {
+    setEditMode(true)
     cardForm.onOpen()
   }
 
   const closeForm = () => {
-    if (editCardId) {
-      setEditCardId("")
+    if (editMode) {
+      setEditMode(false)
     }
     cardForm.onClose()
   }
@@ -130,18 +124,18 @@ const CardCollection: React.FC<CardCollectionProps> = ({ cards, loading }) => {
         </Box>
       </Skeleton>
       <TransactionList
-        transactions={currentCard.transactions}
-        cardId={currentCard._id}
-        cardType={currentCard.type}
+        transactions={currentCard?.transactions}
+        cardId={currentCard?._id}
+        cardType={currentCard?.type}
         loading={loading}
       />
-      <CardForm
-        isOpen={cardForm.isOpen}
-        onClose={closeForm}
-        editCard={
-          editCardId ? cards.find((card) => card._id === editCardId) : null
-        }
-      />
+      {cardForm.isOpen && (
+        <CardForm
+          isOpen={cardForm.isOpen}
+          onClose={closeForm}
+          editCard={editMode ? currentCard : null}
+        />
+      )}
     </Box>
   )
 }

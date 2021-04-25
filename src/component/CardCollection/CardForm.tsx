@@ -40,7 +40,7 @@ interface EditCardResponse extends CreateCardRequestBody {
 }
 
 interface CardFormProps extends UseDisclosureProps {
-  editCard: CardT
+  editCard: CardT | null
 }
 
 const postCard = async (
@@ -120,7 +120,8 @@ const CardForm: React.FC<CardFormProps> = ({ isOpen, onClose, editCard }) => {
           </FormControl>
           <FormControl mb="3">
             <FormLabel textTransform="uppercase">
-              {watch("type") === "credit card"
+              {watch("type") === "credit card" ||
+              editCard.type === "credit card"
                 ? "Outstanding Balance"
                 : "Current Balance"}
             </FormLabel>
