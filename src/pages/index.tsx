@@ -5,6 +5,7 @@ import AuthGuard from "../component/AuthGuard"
 import axios from "axios"
 import { CardT } from "../component/CardCollection/types"
 import { useQuery } from "react-query"
+import { getSession } from "next-auth/client"
 
 const getCards = async (): Promise<CardT[]> => {
   const response = await axios.get<CardT[]>("/api/cards")
@@ -21,6 +22,11 @@ const Homepage: React.FC = () => {
       </ManekoPage>
     </AuthGuard>
   )
+}
+
+export async function getServerSideProps(ctx) {
+  const session = await getSession(ctx)
+  return { props: { session } }
 }
 
 export default Homepage
