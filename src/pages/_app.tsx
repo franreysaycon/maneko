@@ -19,8 +19,7 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => (
             name="viewport"
             content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"
           />
-          <meta name="description" content="Description" />
-          <meta name="keywords" content="Keywords" />
+          <link href="favicon.icon" rel="shortcut icon" type="image/x-icon" />
           <link
             href="favicon-16x16.png"
             rel="icon"
