@@ -18,7 +18,14 @@ const deleteTransaction: deleteTransactionFn = async ({
   transId,
 }) => {
   const card = await CardModel.findOne({ _id: cardId, userId })
+  const dTransaction = card.transactions.find((ct) => `${ct._id}` === transId)
   card.transactions = card.transactions.filter((ct) => `${ct._id}` !== transId)
+  if (dTransaction.type === "neg") {
+    card.balance += dTransaction.value
+  } else {
+    card.balance -= dTransaction.value
+  }
+
   await card.save()
 }
 
