@@ -8,5 +8,11 @@ export default NextAuth({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
   ],
-  database: process.env.DATABASE_URL,
+  database: {
+    type: "mongodb",
+    url: process.env.DATABASE_URL,
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    bufferMaxEntries: 0,
+  },
 })
