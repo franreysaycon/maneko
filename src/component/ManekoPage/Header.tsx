@@ -18,7 +18,7 @@ const Header: React.FC<HeaderProps> = ({ onSidebarOpen }) => (
       position="relative"
       top="-2px"
     >
-      maniko
+      maneko
     </Text>
   </Box>
 )
