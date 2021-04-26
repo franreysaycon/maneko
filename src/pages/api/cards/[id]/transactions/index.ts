@@ -1,6 +1,6 @@
 import { NextApiHandler } from "next"
 import { getSession } from "next-auth/client"
-import mongooseConnect from "../../../../../middlewares/mongooseConnect"
+import dbConnect from "../../../../../lib/dbConnect"
 import CardModel, { TransactionC } from "../../../../../models/CardModel"
 import UserModel from "../../../../../models/UserModel"
 
@@ -37,6 +37,7 @@ const CardTransactionHandler: NextApiHandler = async (
   req,
   res
 ): Promise<void> => {
+  await dbConnect()
   const session = await getSession({ req })
   const user = await UserModel.findOne({ email: session.user.email }).lean()
   const cardId = req.query.id as string
@@ -44,7 +45,7 @@ const CardTransactionHandler: NextApiHandler = async (
   switch (req.method) {
     case "POST": {
       const data = req.body as CreateTransactionRequestBody
-      await createTransaction({ data, userId: user.id, cardId })
+      await createTransaction({ data, userId: user._id, cardId })
       return res.json({ success: true })
     }
     default: {
@@ -53,4 +54,4 @@ const CardTransactionHandler: NextApiHandler = async (
   }
 }
 
-export default mongooseConnect(CardTransactionHandler)
+export default CardTransactionHandler

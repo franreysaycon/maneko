@@ -13,7 +13,7 @@ interface TransactionProps extends TransactionT {
 const TYPE_MAPPING = {
   atm: {
     neg: "withdrawal",
-    pos: "deposity",
+    pos: "deposit",
   },
   "credit card": {
     neg: "transaction",

@@ -1,8 +1,8 @@
 import { DocumentType } from "@typegoose/typegoose"
-import { LeanDocument } from "mongoose"
+import { DocumentDefinition } from "mongoose"
 import { NextApiHandler } from "next"
 import { getSession } from "next-auth/client"
-import mongooseConnect from "../../../middlewares/mongooseConnect"
+import dbConnect from "../../../lib/dbConnect"
 import CardModel, { CardC } from "../../../models/CardModel"
 import UserModel from "../../../models/UserModel"
 
@@ -22,7 +22,7 @@ interface CreateCardResponse extends CreateCardRequestBody {
 
 const getCards = async (
   userId: string
-): Promise<LeanDocument<DocumentType<CardC>>[]> => {
+): Promise<DocumentDefinition<DocumentType<CardC>>[]> => {
   const cards = await CardModel.find({ userId }).lean()
   return cards
 }
@@ -53,16 +53,17 @@ const createCard = async ({
 }
 
 const CardApiHandler: NextApiHandler = async (req, res): Promise<void> => {
+  await dbConnect()
   const session = await getSession({ req })
   const user = await UserModel.findOne({ email: session.user.email }).lean()
 
   switch (req.method) {
     case "GET": {
-      return res.json(await getCards(user.id))
+      return res.json(await getCards(user._id))
     }
     case "POST": {
       const data = req.body as CreateCardRequestBody
-      return res.json(await createCard({ ...data, userId: user.id }))
+      return res.json(await createCard({ ...data, userId: user._id }))
     }
     default: {
       throw Error("Method not supported.")
@@ -70,4 +71,4 @@ const CardApiHandler: NextApiHandler = async (req, res): Promise<void> => {
   }
 }
 
-export default mongooseConnect(CardApiHandler)
+export default CardApiHandler

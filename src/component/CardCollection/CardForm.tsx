@@ -121,7 +121,7 @@ const CardForm: React.FC<CardFormProps> = ({ isOpen, onClose, editCard }) => {
           <FormControl mb="3">
             <FormLabel textTransform="uppercase">
               {watch("type") === "credit card" ||
-              editCard.type === "credit card"
+              editCard?.type === "credit card"
                 ? "Outstanding Balance"
                 : "Current Balance"}
             </FormLabel>

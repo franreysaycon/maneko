@@ -1,6 +1,6 @@
 import { NextApiHandler } from "next"
 import { getSession } from "next-auth/client"
-import mongooseConnect from "../../../../middlewares/mongooseConnect"
+import dbConnect from "../../../../lib/dbConnect"
 import CardModel from "../../../../models/CardModel"
 import UserModel from "../../../../models/UserModel"
 
@@ -43,6 +43,7 @@ const editCard = async ({
 }
 
 const CardSpecHandler: NextApiHandler = async (req, res): Promise<void> => {
+  await dbConnect()
   const session = await getSession({ req })
   const user = await UserModel.findOne({ email: session.user.email }).lean()
   const cardId = req.query.id as string
@@ -50,7 +51,7 @@ const CardSpecHandler: NextApiHandler = async (req, res): Promise<void> => {
   switch (req.method) {
     case "PUT": {
       const data = req.body as EditCardRequestBody
-      const response = await editCard({ ...data, cardId, userId: user.id })
+      const response = await editCard({ ...data, cardId, userId: user._id })
       return res.json(response)
     }
     default: {
@@ -59,4 +60,4 @@ const CardSpecHandler: NextApiHandler = async (req, res): Promise<void> => {
   }
 }
 
-export default mongooseConnect(CardSpecHandler)
+export default CardSpecHandler

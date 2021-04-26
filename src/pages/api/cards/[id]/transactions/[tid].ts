@@ -1,6 +1,6 @@
 import { NextApiHandler } from "next"
 import { getSession } from "next-auth/client"
-import mongooseConnect from "../../../../../middlewares/mongooseConnect"
+import dbConnect from "../../../../../lib/dbConnect"
 import CardModel from "../../../../../models/CardModel"
 import UserModel from "../../../../../models/UserModel"
 
@@ -33,6 +33,8 @@ const CardSpecTransactionHandler: NextApiHandler = async (
   req,
   res
 ): Promise<void> => {
+  await dbConnect()
+
   const session = await getSession({ req })
   const user = await UserModel.findOne({ email: session.user.email }).lean()
   const cardId = req.query.id as string
@@ -40,7 +42,7 @@ const CardSpecTransactionHandler: NextApiHandler = async (
 
   switch (req.method) {
     case "DELETE": {
-      await deleteTransaction({ userId: user.id, cardId, transId })
+      await deleteTransaction({ userId: user._id, cardId, transId })
       return res.json({ tid: transId })
     }
     default: {
@@ -49,4 +51,4 @@ const CardSpecTransactionHandler: NextApiHandler = async (
   }
 }
 
-export default mongooseConnect(CardSpecTransactionHandler)
+export default CardSpecTransactionHandler
