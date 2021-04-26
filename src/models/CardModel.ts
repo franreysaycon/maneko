@@ -1,5 +1,4 @@
-import { getModelForClass, pre, prop } from "@typegoose/typegoose"
-import { ObjectId } from "mongoose"
+import { getModelForClass, mongoose, pre, prop } from "@typegoose/typegoose"
 
 @pre<TransactionC>("save", function () {
   if (!this.createdAt) {
@@ -7,8 +6,8 @@ import { ObjectId } from "mongoose"
   }
 })
 export class TransactionC {
-  @prop()
-  public _id: ObjectId
+  @prop({ auto: true })
+  public _id: mongoose.Types.ObjectId
 
   @prop()
   public name: string
@@ -54,7 +53,7 @@ export class CardC {
   @prop()
   public budget: number
 
-  @prop({ type: () => TransactionC, default: [] })
+  @prop({ type: TransactionC })
   public transactions: TransactionC[]
 }
 
